@@ -1,8 +1,11 @@
 from pico2d import*
+import random
+import math
 
 open_canvas()
 back_ground = load_image('TUK_GROUND.png')
-boy = load_image('animation_sheet.png')
+boy = load_image('my_character.png')
+arrow = load_image('hand_arrow.png')
 
 def handle_events():
     global running
@@ -14,14 +17,44 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 running = False
 
+def goto_arrow():
+    global boy_x, boy_y, direct
+    length = math.sqrt( math.pow(arrow_x - boy_x, 2) + math.pow(arrow_y - boy_y, 2))
+    boy_x += 10 * (arrow_x - boy_x) / length
+    boy_y += 10 * (arrow_y - boy_y) / length
+    if boy_x < arrow_x:
+        if boy_y < arrow_y:
+            direct = 0
+        else:
+            direct = 3
+    else:
+        if boy_y < arrow_y:
+            direct = 2
+        else:
+            direct = 1
+
 running = True
+frame = 1
+direct = 0
+moving = False
+size = 10
+boy_x = random.randint(20, 780)
+boy_y = random.randint(30,570)
+arrow_x = random.randint(50, 750)
+arrow_y = random.randint(50, 550)
 
 while running:
     clear_canvas()
     back_ground.draw(400, 300, 800, 600)
-    boy.clip_draw(0, 0, 100, 100, 300, 400, 40, 60)
+    boy.clip_draw(frame * 135, direct * 200, 135, 200, boy_x, boy_y, 40, 6 * size)
+    arrow.draw(arrow_x, arrow_y, 100, 100)
     update_canvas()
+    goto_arrow()
     handle_events()
+    if arrow_x - 50 <= boy_x <= arrow_x + 50 and arrow_y -50 <= boy_y <= arrow_y + 50:
+        arrow_x = random.randint(50, 750)
+        arrow_y = random.randint(50, 550)
+    frame = (frame + 1) % 4
     delay(0.05)
 
 close_canvas()
