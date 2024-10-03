@@ -1,3 +1,4 @@
+# 2023182003 게임공학과 김서진
 from pico2d import*
 import random
 import math
