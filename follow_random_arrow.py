@@ -19,18 +19,23 @@ def handle_events():
 
 def goto_arrow():
     global boy_x, boy_y, direct
-    length = math.sqrt( math.pow(arrow_x - boy_x, 2) + math.pow(arrow_y - boy_y, 2))
-    boy_x += 10 * (arrow_x - boy_x) / length
-    boy_y += 10 * (arrow_y - boy_y) / length
-    if boy_x < arrow_x:
-        if boy_y < arrow_y:
-            direct = 0
-        else:
+    length = math.sqrt( math.pow(arrow_x - 50 - boy_x, 2) + math.pow(arrow_y + 50 - boy_y, 2))
+    if -10 < length < 10:
+        boy_x = arrow_x - 50
+        boy_y = arrow_y + 50
+    else:
+        boy_x += 10 * (arrow_x - 50 - boy_x) / length
+        boy_y += 10 * (arrow_y + 50 - boy_y) / length
+
+    if (arrow_x - 50 - boy_x)*(arrow_x - 50 - boy_x) < (arrow_y + 50 - boy_y)*(arrow_y + 50 - boy_y):
+        if boy_y < arrow_y + 50:
+            direct = 2
+        elif boy_y > arrow_y + 50:
             direct = 3
     else:
-        if boy_y < arrow_y:
-            direct = 2
-        else:
+        if boy_x < arrow_x - 50:
+            direct = 0
+        elif boy_x > arrow_x - 50:
             direct = 1
 
 running = True
@@ -49,11 +54,12 @@ while running:
     boy.clip_draw(frame * 135, direct * 200, 135, 200, boy_x, boy_y, 40, 6 * size)
     arrow.draw(arrow_x, arrow_y, 100, 100)
     update_canvas()
-    goto_arrow()
     handle_events()
-    if arrow_x - 50 <= boy_x <= arrow_x + 50 and arrow_y -50 <= boy_y <= arrow_y + 50:
+    if arrow_x - 50 == boy_x and arrow_y + 50 == boy_y:
         arrow_x = random.randint(50, 750)
         arrow_y = random.randint(50, 550)
+    else:
+        goto_arrow()
     frame = (frame + 1) % 4
     delay(0.05)
 
