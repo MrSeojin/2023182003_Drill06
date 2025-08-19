@@ -28,7 +28,7 @@ def goto_arrow():
         boy_x += 10 * (arrow_x - 50 - boy_x) / length
         boy_y += 10 * (arrow_y + 50 - boy_y) / length
 
-    if (arrow_x - 50 - boy_x)*(arrow_x - 50 - boy_x) < (arrow_y + 50 - boy_y)*(arrow_y + 50 - boy_y):
+    if (arrow_x - 50 - boy_x) * (arrow_x - 50 - boy_x) < (arrow_y + 50 - boy_y)*(arrow_y + 50 - boy_y):
         if boy_y < arrow_y + 50:
             direct = 2
         elif boy_y > arrow_y + 50:
